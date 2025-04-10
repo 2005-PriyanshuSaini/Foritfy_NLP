@@ -1,0 +1,7 @@
+open your venv file(.\venv\Scripts\Activate.ps1)
+run pip install mysql-connector-python
+and pip install fastapi[all]
+in terminal 1 use command( uvicorn main:app --reload )
+use ./ngrok config add-authtoken 2qCIrDFqcfVoGUm6A1L442BP5b4_6XyyQmTjNnTe5vdUKVmR3
+open terminal 2 and use(ngrok http 8000)
+after the link is provided then go to fulfillment
