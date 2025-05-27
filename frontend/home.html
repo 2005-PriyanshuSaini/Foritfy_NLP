@@ -1,55 +1,893 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortify - AI-Powered Order Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 50%, #ea4335 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            color: #4285f4;
+            -webkit-text-fill-color: #4285f4;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #4285f4;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #4285f4;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 50%, #ea4335 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle fill="rgba(255,255,255,0.1)" cx="200" cy="200" r="100"/><circle fill="rgba(255,255,255,0.05)" cx="800" cy="300" r="150"/><circle fill="rgba(255,255,255,0.1)" cx="400" cy="700" r="80"/></svg>');
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: slideInUp 1s ease-out 0.2s both;
+        }
+
+        .dialogflow-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideInUp 1s ease-out 0.4s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button.primary {
+            background: rgba(255, 255, 255, 0.9);
+            color: #4285f4;
+            border-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .cta-button.primary:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Chat Demo Section */
+        .chat-demo-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 500px;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .demo-info {
+            animation: slideInLeft 1s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .demo-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .demo-info p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .features-list i {
+            color: #34a853;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        .chat-widget-container {
+            position: relative;
+            animation: slideInRight 1s ease-out;
+            display: flex;
+            justify-content: center;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .widget-showcase {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .widget-showcase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4285f4, #34a853, #ea4335, #fbbc05);
+        }
+
+        .widget-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .widget-header h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .widget-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .messenger-container {
+            position: relative;
+            height: 500px;
+            border-radius: 15px;
+            overflow: visible;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Custom styling for df-messenger */
+        df-messenger {
+            --df-messenger-bot-message: #e3f2fd;
+            --df-messenger-button-titlebar-color: #4285f4;
+            --df-messenger-chat-background-color: #ffffff;
+            --df-messenger-font-color: #333333;
+            --df-messenger-send-icon: #4285f4;
+            --df-messenger-user-message: #4285f4;
+            --df-messenger-input-box-color: #ffffff;
+            --df-messenger-input-font-color: #333333;
+            --df-messenger-minimized-chat-close-icon-color: #ffffff;
+            --df-messenger-titlebar-font-color: #ffffff;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .powered-by {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 5rem 2rem;
+            background: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            text-align: center;
+            border: 1px solid #f0f0f0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-color: #4285f4;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #4285f4;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .chat-demo-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .demo-info {
+                order: 2;
+            }
+
+            .chat-widget-container {
+                order: 1;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .widget-showcase {
+                max-width: 100%;
+            }
+
+            .messenger-container {
+                height: 400px;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
-    <header>
-        <nav>
-            <a href="#home">HOME</a> |
-            <a href="#menu">MENU</a> |
-            <a href="#location">LOCATION</a> |
-            <a href="#aboutus">ABOUT US</a> |
-            <a href="#contactus">CONTACT US</a>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                Fortify
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#demo">Try Bot</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
         </nav>
     </header>
 
-    <section id="home">
-		<img src="banner.jpg" >
-        <!-- Add images here -->
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Fortify Your Orders with AI</h1>
+            <p class="subtitle">Experience next-generation order management with our intelligent Dialogflow-powered assistant that understands, processes, and secures your business operations.</p>
+            <div class="dialogflow-badge">
+                <i class="fab fa-google"></i>
+                Powered by Google Dialogflow
+            </div>
+            <div class="cta-buttons">
+                <a href="#demo" class="cta-button primary">Try Fortify Now</a>
+                <a href="#features" class="cta-button">Learn More</a>
+            </div>
+        </div>
     </section>
 
-    <section id="menu">
-        <h2>Our Menu</h2>
-        <div class="grid-container">
-        <img src="menu1.jpg" alt="Menu item 1">
-        <img src="menu2.jpg" alt="Menu item 2">
-        <img src="menu3.jpg" alt="Menu item 3">
-    </div>
+    <!-- Chat Demo Section -->
+    <section id="demo" class="chat-demo-section">
+        <div class="chat-demo-container">
+            <div class="demo-info">
+                <h2>Meet Fortify AI Assistant</h2>
+                <p>Our advanced Dialogflow-powered chatbot provides enterprise-grade order management with natural language understanding. Fortify learns from every interaction to provide better, more secure service.</p>
+                
+                <ul class="features-list">
+                    <li>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Intelligent order placement and processing</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-search"></i>
+                        <span>Real-time order tracking and updates</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Secure transaction handling</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-edit"></i>
+                        <span>Easy order modifications and cancellations</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-microphone"></i>
+                        <span>Voice-enabled interactions</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-clock"></i>
+                        <span>24/7 intelligent support</span>
+                    </li>
+                </ul>
+
+                <div style="background: #e3f2fd; padding: 1rem; border-radius: 10px; margin-top: 1.5rem;">
+                    <p><strong>💡 Try asking:</strong></p>
+                    <p style="margin: 0.5rem 0; font-style: italic;">"I need to place an order for 10 laptops"</p>
+                    <p style="margin: 0.5rem 0; font-style: italic;">"Track my order #12345"</p>
+                    <p style="margin: 0.5rem 0; font-style: italic;">"Cancel my recent order"</p>
+                </div>
+            </div>
+
+            <div class="chat-widget-container">
+                <div class="widget-showcase">
+                    <div class="widget-header">
+                        <h3>Fortify AI Assistant</h3>
+                        <p>Your intelligent order management companion is ready to help</p>
+                    </div>
+                    
+                    <div class="messenger-container">
+                        <df-messenger
+                            intent="WELCOME"
+                            chat-title="Fortify"
+                            agent-id="f71aae50-4cf1-4a01-8633-87e7bc286745"
+                            language-code="en"
+                            chat-icon="https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/smart_toy/default/24px.svg">
+                        </df-messenger>
+                    </div>
+
+                    <div class="powered-by">
+                        <i class="fab fa-google"></i>
+                        <span>Powered by Google Dialogflow</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="location">
-        <h2>Location</h2>
-        <p>38 Patli Gali, Mumbai</p>
-        <!-- Add map widget here -->
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title fade-in">Why Choose Fortify?</h2>
+            <p class="section-subtitle fade-in">Built with Google's advanced Dialogflow technology for superior natural language understanding and enterprise security</p>
+            
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Enterprise Security</h3>
+                    <p>Bank-level encryption and Google Cloud security ensure your order data and customer information stays protected at all times.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fab fa-google"></i>
+                    </div>
+                    <h3>Google Dialogflow Powered</h3>
+                    <p>Leverages Google's advanced NLP and machine learning capabilities for accurate intent recognition and natural conversations.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>Multi-Language Support</h3>
+                    <p>Communicate in multiple languages with automatic translation and localization powered by Google's language models.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h3>Voice Recognition</h3>
+                    <p>Speak naturally to place orders using Google's speech-to-text technology for hands-free order management.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Smart Context Awareness</h3>
+                    <p>Maintains conversation context and remembers previous interactions for more personalized and efficient assistance.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync"></i>
+                    </div>
+                    <h3>Real-time Integration</h3>
+                    <p>Seamlessly connects with your existing systems for instant order processing, inventory updates, and status tracking.</p>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="contactus">
-        <h2>Contact Us</h2>
-        <p>Got questions? Want to place an order? Call us at +91791234567 or email us at info@atliqfastfood.com</p>
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item fade-in">
+                <span class="stat-number">99.9%</span>
+                <span class="stat-label">Uptime Guarantee</span>
+            </div>
+            <div class="stat-item fade-in">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Languages Supported</span>
+            </div>
+            <div class="stat-item fade-in">
+                <span class="stat-number">24/7</span>
+                <span class="stat-label">AI Availability</span>
+            </div>
+            <div class="stat-item fade-in">
+                <span class="stat-number">95%</span>
+                <span class="stat-label">Intent Accuracy</span>
+            </div>
+        </div>
     </section>
 
-	
- <!-- <iframe class="chat-bot" width="350" height="430" allow="microphone;" src="https://console.dialogflow.com/api-client/demo/embedded/26e44813-1fb1-492f-a8b8-6f745839704e"></iframe> -->
- <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-<df-messenger
-  intent="WELCOME"
-  chat-title="Fortify"
-  agent-id="f71aae50-4cf1-4a01-8633-87e7bc286745"
-  language-code="en"
-></df-messenger>
-	</div>
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Fortify. All rights reserved.</p>
+            <p>Powered by Google Dialogflow | Advanced AI Order Management</p>
+            <div class="footer-links">
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+                <a href="#support">Support</a>
+                <a href="#api">API Documentation</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Dialogflow Messenger Script -->
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // Animate stats numbers
+        document.addEventListener('DOMContentLoaded', function() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            const animateStats = () => {
+                statNumbers.forEach(stat => {
+                    const finalValue = stat.textContent;
+                    const isPercentage = finalValue.includes('%');
+                    const numericValue = parseFloat(finalValue.replace(/[^\d.]/g, ''));
+                    
+                    let currentValue = 0;
+                    const increment = numericValue / 50;
+                    
+                    const timer = setInterval(() => {
+                        currentValue += increment;
+                        if (currentValue >= numericValue) {
+                            currentValue = numericValue;
+                            clearInterval(timer);
+                        }
+                        
+                        if (isPercentage) {
+                            stat.textContent = currentValue.toFixed(1) + '%';
+                        } else if (finalValue.includes('+')) {
+                            stat.textContent = Math.floor(currentValue) + '+';
+                        } else {
+                            stat.textContent = finalValue.includes('/') ? '24/7' : Math.floor(currentValue);
+                        }
+                    }, 50);
+                });
+            };
+
+            // Trigger animation when stats section is visible
+            const statsSection = document.querySelector('.stats-section');
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateStats();
+                        statsObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            statsObserver.observe(statsSection);
+        });
+
+        // Dialogflow Messenger event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const dfMessenger = document.querySelector('df-messenger');
+            
+            // Listen for when the messenger is ready
+            dfMessenger.addEventListener('df-messenger-loaded', function() {
+                console.log('Fortify AI Assistant is ready!');
+            });
+
+            // Listen for user messages
+            dfMessenger.addEventListener('df-user-input-entered', function(event) {
+                console.log('User message:', event.detail.input);
+                // You can add analytics tracking here
+            });
+
+            // Listen for bot responses
+            dfMessenger.addEventListener('df-response-received', function(event) {
+                console.log('Bot response:', event.detail.response);
+                // You can add analytics tracking here
+            });
+        });
+
+        // Add click tracking for analytics
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.cta-button')) {
+                console.log('CTA button clicked - user interested in trying Fortify');
+            }
+            if (e.target.closest('.feature-card')) {
+                console.log('Feature card clicked:', e.target.closest('.feature-card').querySelector('h3').textContent);
+            }
+        });
+
+        // Welcome message after page load
+        setTimeout(() => {
+            console.log('🛡️ Welcome to Fortify - Your AI-Powered Order Management Solution!');
+        }, 2000);
+    </script>
 </body>
 </html>
