@@ -1,0 +1,6 @@
+.env
+env/
+
+startup.txt/
+bin/
+ngrok.exe
