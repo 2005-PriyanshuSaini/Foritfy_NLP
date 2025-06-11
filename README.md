@@ -1,6 +1,6 @@
 # NLP Chatbot for Restaurant Operations
 
-**GitHub Repository**: [NLP_Chatbot-Dialog_flow](https://github.com/2005-PriyanshuSaini/NLP_Chatbot-Dialog_flow)
+**Hosted**: [NLP_Chatbot-Dialog_flow](https://foritfy-nlp.vercel.app/)
 
 ## 🧠 Overview
 
