@@ -4,8 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fortify - AI-Powered Order Management</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-blue: #2563eb;
+            --primary-green: #10b981;
+            --primary-purple: #8b5cf6;
+            --primary-orange: #f59e0b;
+            --dark-bg: #0f172a;
+            --dark-card: #1e293b;
+            --light-gray: #f8fafc;
+            --medium-gray: #64748b;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border-light: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,10 +32,11 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: var(--text-dark);
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         /* Header */
@@ -24,77 +44,104 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid var(--border-light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow-md);
         }
 
         .nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 1rem 2rem;
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #4285f4 0%, #34a853 50%, #ea4335 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            text-decoration: none;
         }
 
-        .logo i {
-            color: #4285f4;
-            -webkit-text-fill-color: #4285f4;
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
             gap: 2rem;
+            align-items: center;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: #333;
+            color: var(--text-light);
             font-weight: 500;
-            transition: color 0.3s ease;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
             position: relative;
+            padding: 0.5rem 0;
         }
 
         .nav-links a:hover {
-            color: #4285f4;
+            color: var(--primary-blue);
         }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background: #4285f4;
-            transition: width 0.3s ease;
+        .nav-links a.active {
+            color: var(--primary-blue);
         }
 
-        .nav-links a:hover::after {
-            width: 100%;
+        .nav-cta {
+            background: var(--primary-blue);
+            color: white !important;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Mobile menu toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
         }
 
         /* Hero Section */
         .hero {
-            height: 100vh;
-            background: linear-gradient(135deg, #4285f4 0%, #34a853 50%, #ea4335 100%);
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -111,82 +158,97 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle fill="rgba(255,255,255,0.1)" cx="200" cy="200" r="100"/><circle fill="rgba(255,255,255,0.05)" cx="800" cy="300" r="150"/><circle fill="rgba(255,255,255,0.1)" cx="400" cy="700" r="80"/></svg>');
-            animation: float 8s ease-in-out infinite;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: float 20s ease-in-out infinite;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
         }
 
         .hero-content {
             max-width: 900px;
             z-index: 2;
             position: relative;
+            padding: 0 2rem;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            animation: slideInUp 1s ease-out;
-        }
-
-        .hero .subtitle {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            animation: slideInUp 1s ease-out 0.2s both;
-        }
-
-        .dialogflow-badge {
+        .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
             padding: 0.5rem 1rem;
-            border-radius: 25px;
+            border-radius: 50px;
             font-size: 0.9rem;
             margin-bottom: 2rem;
-            animation: slideInUp 1s ease-out 0.3s both;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideInUp 0.8s ease-out 0.2s both;
         }
 
-        .cta-buttons {
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            animation: slideInUp 0.8s ease-out 0.3s both;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideInUp 0.8s ease-out 0.4s both;
+        }
+
+        .hero-buttons {
             display: flex;
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
-            animation: slideInUp 1s ease-out 0.4s both;
+            animation: slideInUp 0.8s ease-out 0.5s both;
         }
 
-        .cta-button {
-            display: inline-block;
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             padding: 1rem 2rem;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            text-decoration: none;
             border-radius: 50px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary-blue);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
             border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
-        .cta-button:hover {
-            background: rgba(255, 255, 255, 0.3);
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .cta-button.primary {
-            background: rgba(255, 255, 255, 0.9);
-            color: #4285f4;
-            border-color: rgba(255, 255, 255, 0.9);
-        }
-
-        .cta-button.primary:hover {
-            background: white;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         @keyframes slideInUp {
@@ -200,17 +262,14 @@
             }
         }
 
-        /* Chat Demo Section */
-        .chat-demo-section {
-            padding: 5rem 2rem;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
+        /* Demo Section */
+        .demo-section {
+            padding: 6rem 2rem;
+            background: var(--light-gray);
         }
 
-        .chat-demo-container {
-            max-width: 1200px;
+        .demo-container {
+            max-width: 1280px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 500px;
@@ -218,95 +277,89 @@
             align-items: center;
         }
 
-        .demo-info {
-            animation: slideInLeft 1s ease-out;
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .demo-info h2 {
-            font-size: 2.5rem;
+        .demo-content h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 700;
             margin-bottom: 1.5rem;
-            color: #333;
-            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--text-dark);
+            line-height: 1.2;
         }
 
-        .demo-info p {
+        .demo-content p {
             font-size: 1.1rem;
-            color: #666;
+            color: var(--text-light);
             margin-bottom: 2rem;
-            line-height: 1.8;
+            line-height: 1.7;
         }
 
-        .features-list {
+        .feature-list {
             list-style: none;
             margin-bottom: 2rem;
         }
 
-        .features-list li {
+        .feature-list li {
             display: flex;
             align-items: center;
             gap: 1rem;
             margin-bottom: 1rem;
             font-size: 1rem;
-            color: #555;
+            color: var(--text-dark);
         }
 
-        .features-list i {
-            color: #34a853;
-            font-size: 1.2rem;
-            width: 20px;
-        }
-
-        .chat-widget-container {
-            position: relative;
-            animation: slideInRight 1s ease-out;
+        .feature-list .icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
+            border-radius: 6px;
             display: flex;
+            align-items: center;
             justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            flex-shrink: 0;
         }
 
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .demo-suggestions {
+            background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid #bfdbfe;
         }
 
-        .widget-showcase {
+        .demo-suggestions h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-suggestions p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin: 0.5rem 0;
+            font-style: italic;
+        }
+
+        .chat-widget {
             background: white;
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 2rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            box-shadow: var(--shadow-xl);
             position: relative;
             overflow: hidden;
-            width: 100%;
-            max-width: 450px;
         }
 
-        .widget-showcase::before {
+        .chat-widget::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #4285f4, #34a853, #ea4335, #fbbc05);
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-green), var(--primary-purple), var(--primary-orange));
         }
 
         .widget-header {
@@ -316,48 +369,263 @@
 
         .widget-header h3 {
             font-size: 1.3rem;
-            color: #333;
+            font-weight: 600;
+            color: var(--text-dark);
             margin-bottom: 0.5rem;
         }
 
         .widget-header p {
-            color: #666;
+            color: var(--text-light);
             font-size: 0.9rem;
         }
 
+        /* Enhanced Messenger Container */
         .messenger-container {
-            position: relative;
             height: 500px;
-            border-radius: 15px;
-            overflow: visible;
-            background: transparent;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid var(--border-light);
+        }
+
+        /* Interactive Demo Interface */
+        .demo-interface {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            position: relative;
+        }
+
+        .demo-chat-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 2px 10px rgba(37, 99, 235, 0.2);
+        }
+
+        .demo-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.2rem;
+            backdrop-filter: blur(10px);
         }
 
-        /* Custom styling for df-messenger */
-        df-messenger {
-            --df-messenger-bot-message: #e3f2fd;
-            --df-messenger-button-titlebar-color: #4285f4;
-            --df-messenger-chat-background-color: #ffffff;
-            --df-messenger-font-color: #333333;
-            --df-messenger-send-icon: #4285f4;
-            --df-messenger-user-message: #4285f4;
-            --df-messenger-input-box-color: #ffffff;
-            --df-messenger-input-font-color: #333333;
-            --df-messenger-minimized-chat-close-icon-color: #ffffff;
-            --df-messenger-titlebar-font-color: #ffffff;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
+        .demo-chat-info h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .demo-status {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .demo-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: linear-gradient(to bottom, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .demo-message {
+            display: flex;
+            gap: 0.75rem;
+            animation: messageSlideIn 0.5s ease-out;
+        }
+
+        .demo-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .demo-message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .demo-message.bot .demo-message-avatar {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+        }
+
+        .demo-message.user .demo-message-avatar {
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
+            color: white;
+        }
+
+        .demo-message-content {
+            max-width: 75%;
+            padding: 0.75rem 1rem;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .demo-message.bot .demo-message-content {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            color: var(--text-dark);
+            border-bottom-left-radius: 6px;
+        }
+
+        .demo-message.user .demo-message-content {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            border-bottom-right-radius: 6px;
+        }
+
+        .demo-quick-actions {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-light);
+            background: #f8fafc;
+        }
+
+        .quick-actions-title {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .quick-action-btn {
+            background: white;
+            border: 1px solid var(--border-light);
+            padding: 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quick-action-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .quick-action-icon {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        .demo-input-area {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-light);
+            background: white;
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .demo-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-light);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        .demo-input:focus {
+            border-color: var(--primary-blue);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .demo-send-btn {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .demo-send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .powered-by {
             text-align: center;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: #666;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -366,79 +634,98 @@
 
         /* Features Section */
         .features-section {
-            padding: 5rem 2rem;
+            padding: 6rem 2rem;
             background: white;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
         }
 
         .section-title {
-            text-align: center;
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 700;
             margin-bottom: 1rem;
-            color: #333;
+            color: var(--text-dark);
         }
 
         .section-subtitle {
-            text-align: center;
             font-size: 1.1rem;
-            color: #666;
-            margin-bottom: 3rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            color: var(--text-light);
+            line-height: 1.6;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
-            margin-top: 3rem;
+            max-width: 1280px;
+            margin: 0 auto;
         }
 
         .feature-card {
             background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            text-align: center;
-            border: 1px solid #f0f0f0;
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-green));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            border-color: #4285f4;
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-blue);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
         }
 
         .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #4285f4, #34a853);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .feature-card h3 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 600;
             margin-bottom: 1rem;
-            color: #333;
+            color: var(--text-dark);
         }
 
         .feature-card p {
-            color: #666;
+            color: var(--text-light);
             line-height: 1.6;
         }
 
         /* Stats Section */
         .stats-section {
-            padding: 3rem 2rem;
-            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--dark-bg), var(--dark-card));
             color: white;
         }
 
@@ -452,80 +739,115 @@
 
         .stat-item {
             text-align: center;
+            padding: 1rem;
         }
 
         .stat-number {
             font-size: 3rem;
-            font-weight: bold;
+            font-weight: 800;
             margin-bottom: 0.5rem;
             display: block;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .stat-label {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            font-size: 1rem;
+            opacity: 0.8;
+            font-weight: 500;
         }
 
         /* Footer */
         .footer {
-            background: #333;
+            background: var(--dark-bg);
             color: white;
-            text-align: center;
-            padding: 2rem;
+            padding: 3rem 2rem 2rem;
         }
 
         .footer-content {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo .logo-icon {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
         }
 
         .footer p {
-            margin-bottom: 1rem;
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
         }
 
         .footer-links {
             display: flex;
             justify-content: center;
             gap: 2rem;
-            margin-top: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
         }
 
         .footer-links a {
-            color: #ccc;
+            color: #94a3b8;
             text-decoration: none;
             transition: color 0.3s ease;
+            font-size: 0.9rem;
         }
 
         .footer-links a:hover {
-            color: #4285f4;
+            color: var(--primary-blue);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #334155;
+            padding-top: 2rem;
+            color: #64748b;
+            font-size: 0.9rem;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero .subtitle {
-                font-size: 1.1rem;
-            }
-
             .nav-links {
                 display: none;
             }
 
-            .chat-demo-container {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .demo-container {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 3rem;
+            }
+
+            .demo-content {
+                order: 2;
                 text-align: center;
             }
 
-            .demo-info {
-                order: 2;
+            .chat-widget {
+                order: 1;
+                max-width: 100%;
             }
 
-            .chat-widget-container {
-                order: 1;
+            .messenger-container {
+                height: 400px;
+            }
+
+            .quick-actions-grid {
+                grid-template-columns: 1fr;
             }
 
             .features-grid {
@@ -541,17 +863,15 @@
                 gap: 1rem;
             }
 
-            .cta-buttons {
+            .hero-buttons {
                 flex-direction: column;
                 align-items: center;
             }
 
-            .widget-showcase {
-                max-width: 100%;
-            }
-
-            .messenger-container {
-                height: 400px;
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
             }
         }
 
@@ -559,111 +879,196 @@
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.6s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Loading animation */
+        .loading {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
-<body>
+<body class="loading">
     <!-- Header -->
     <header class="header">
         <nav class="nav">
-            <div class="logo">
-                <i class="fas fa-shield-alt"></i>
+            <a href="#home" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
                 Fortify
-            </div>
+            </a>
             <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#demo">Try Bot</a></li>
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#demo">Demo</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#contact">Contact</a></li>
+                <li><a href="#demo" class="nav-cta">Try Free</a></li>
             </ul>
+            <button class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
         </nav>
     </header>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1>Fortify Your Orders with AI</h1>
-            <p class="subtitle">Experience next-generation order management with our intelligent Dialogflow-powered assistant that understands, processes, and secures your business operations.</p>
-            <div class="dialogflow-badge">
+            <div class="hero-badge">
                 <i class="fab fa-google"></i>
-                Powered by Google Dialogflow
+                <span>Powered by Google Dialogflow</span>
             </div>
-            <div class="cta-buttons">
-                <a href="#demo" class="cta-button primary">Try Fortify Now</a>
-                <a href="#features" class="cta-button">Learn More</a>
+            <h1>Fortify Your Orders with AI</h1>
+            <p class="subtitle">Transform your business with intelligent order management. Our advanced AI assistant understands, processes, and secures your operations with enterprise-grade reliability.</p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn btn-primary">
+                    <i class="fas fa-rocket"></i>
+                    Start Free Trial
+                </a>
+                <a href="#features" class="btn btn-secondary">
+                    <i class="fas fa-play"></i>
+                    Watch Demo
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Chat Demo Section -->
-    <section id="demo" class="chat-demo-section">
-        <div class="chat-demo-container">
-            <div class="demo-info">
-                <h2>Meet Fortify AI Assistant</h2>
-                <p>Our advanced Dialogflow-powered chatbot provides enterprise-grade order management with natural language understanding. Fortify learns from every interaction to provide better, more secure service.</p>
+    <!-- Demo Section -->
+    <section id="demo" class="demo-section">
+        <div class="demo-container">
+            <div class="demo-content">
+                <h2>Meet Your AI Assistant</h2>
+                <p>Experience the future of order management with our intelligent Dialogflow-powered assistant. Built for enterprise scale with natural language understanding that gets smarter with every interaction.</p>
                 
-                <ul class="features-list">
+                <ul class="feature-list">
                     <li>
-                        <i class="fas fa-shopping-cart"></i>
+                        <div class="icon"><i class="fas fa-shopping-cart"></i></div>
                         <span>Intelligent order placement and processing</span>
                     </li>
                     <li>
-                        <i class="fas fa-search"></i>
+                        <div class="icon"><i class="fas fa-search"></i></div>
                         <span>Real-time order tracking and updates</span>
                     </li>
                     <li>
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Secure transaction handling</span>
+                        <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                        <span>Enterprise-grade security and compliance</span>
                     </li>
                     <li>
-                        <i class="fas fa-edit"></i>
-                        <span>Easy order modifications and cancellations</span>
+                        <div class="icon"><i class="fas fa-edit"></i></div>
+                        <span>Seamless order modifications and cancellations</span>
                     </li>
                     <li>
-                        <i class="fas fa-microphone"></i>
-                        <span>Voice-enabled interactions</span>
+                        <div class="icon"><i class="fas fa-microphone"></i></div>
+                        <span>Voice-enabled natural interactions</span>
                     </li>
                     <li>
-                        <i class="fas fa-clock"></i>
-                        <span>24/7 intelligent support</span>
+                        <div class="icon"><i class="fas fa-clock"></i></div>
+                        <span>24/7 intelligent customer support</span>
                     </li>
                 </ul>
 
-                <div style="background: #e3f2fd; padding: 1rem; border-radius: 10px; margin-top: 1.5rem;">
-                    <p><strong>💡 Try asking:</strong></p>
-                    <p style="margin: 0.5rem 0; font-style: italic;">"I need to place an order for 10 laptops"</p>
-                    <p style="margin: 0.5rem 0; font-style: italic;">"Track my order #12345"</p>
-                    <p style="margin: 0.5rem 0; font-style: italic;">"Cancel my recent order"</p>
+                <div class="demo-suggestions">
+                    <h4>
+                        <i class="fas fa-lightbulb"></i>
+                        Try these sample queries:
+                    </h4>
+                    <p>"I need to place an order for 10 burgers with extra cheese"</p>
+                    <p>"Track my order #12345 and update delivery address"</p>
+                    <p>"Cancel my recent order and process refund"</p>
                 </div>
             </div>
 
-            <div class="chat-widget-container">
-                <div class="widget-showcase">
-                    <div class="widget-header">
-                        <h3>Fortify AI Assistant</h3>
-                        <p>Your intelligent order management companion is ready to help</p>
-                    </div>
-                    
-                    <div class="messenger-container">
-                        <df-messenger
-                            intent="WELCOME"
-                            chat-title="Fortify"
-                            agent-id="f71aae50-4cf1-4a01-8633-87e7bc286745"
-                            language-code="en"
-                            chat-icon="https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/smart_toy/default/24px.svg">
-                        </df-messenger>
-                    </div>
+            <div class="chat-widget">
+                <div class="widget-header">
+                    <h3>Fortify AI Assistant</h3>
+                    <p>Your intelligent order management companion</p>
+                </div>
+                
+                <div class="messenger-container">
+                    <div class="demo-interface">
+                        <!-- Chat Header -->
+                        <div class="demo-chat-header">
+                            <div class="demo-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="demo-chat-info">
+                                <h4>Fortify AI Assistant</h4>
+                                <div class="demo-status">
+                                    <div class="status-dot"></div>
+                                    <span>Online • Ready to help</span>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="powered-by">
-                        <i class="fab fa-google"></i>
-                        <span>Powered by Google Dialogflow</span>
+                        <!-- Chat Messages -->
+                        <div class="demo-messages" id="demoMessages">
+                            <div class="demo-message bot">
+                                <div class="demo-message-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="demo-message-content">
+                                    👋 Welcome to Fortify! I'm your AI-powered order management assistant. How can I help you today?
+                                </div>
+                            </div>
+                            
+                            <div class="demo-message bot">
+                                <div class="demo-message-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="demo-message-content">
+                                    I can help you with placing orders, tracking shipments, processing refunds, and answering product questions. What would you like to do?
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="demo-quick-actions">
+                            <div class="quick-actions-title">Quick Actions</div>
+                            <div class="quick-actions-grid">
+                                <button class="quick-action-btn" onclick="sendQuickMessage('Place new order')">
+                                    <div class="quick-action-icon"><i class="fas fa-plus"></i></div>
+                                    <span>Place Order</span>
+                                </button>
+                                <button class="quick-action-btn" onclick="sendQuickMessage('Track my order')">
+                                    <div class="quick-action-icon"><i class="fas fa-search"></i></div>
+                                    <span>Track Order</span>
+                                </button>
+                                <button class="quick-action-btn" onclick="sendQuickMessage('Cancel order')">
+                                    <div class="quick-action-icon"><i class="fas fa-times"></i></div>
+                                    <span>Cancel Order</span>
+                                </button>
+                                <button class="quick-action-btn" onclick="sendQuickMessage('Get help')">
+                                    <div class="quick-action-icon"><i class="fas fa-question"></i></div>
+                                    <span>Get Help</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Input Area -->
+                        <div class="demo-input-area">
+                            <input type="text" class="demo-input" placeholder="Type your message..." id="demoInput">
+                            <button class="demo-send-btn" onclick="sendDemoMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
                     </div>
+                </div>
+
+                <div class="powered-by">
+                    <i class="fab fa-google"></i>
+                    <span>Powered by Google Dialogflow</span>
                 </div>
             </div>
         </div>
@@ -671,53 +1076,58 @@
 
     <!-- Features Section -->
     <section id="features" class="features-section">
-        <div class="container">
-            <h2 class="section-title fade-in">Why Choose Fortify?</h2>
-            <p class="section-subtitle fade-in">Built with Google's advanced Dialogflow technology for superior natural language understanding and enterprise security</p>
+        <div class="section-header fade-in">
+            <h2 class="section-title">Why Choose Fortify?</h2>
+            <p class="section-subtitle">Built on Google's advanced AI technology with enterprise-grade security and reliability. Transform your order management with intelligent automation.</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Enterprise Security</h3>
+                <p>Bank-level encryption and Google Cloud security infrastructure ensure your order data and customer information remains protected with industry-leading compliance standards.</p>
+            </div>
             
-            <div class="features-grid">
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Enterprise Security</h3>
-                    <p>Bank-level encryption and Google Cloud security ensure your order data and customer information stays protected at all times.</p>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fab fa-google"></i>
                 </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fab fa-google"></i>
-                    </div>
-                    <h3>Google Dialogflow Powered</h3>
-                    <p>Leverages Google's advanced NLP and machine learning capabilities for accurate intent recognition and natural conversations.</p>
+                <h3>Google AI Powered</h3>
+                <p>Leverage Google's cutting-edge natural language processing and machine learning capabilities for accurate intent recognition and human-like conversations.</p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-globe"></i>
                 </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-language"></i>
-                    </div>
-                    <h3>Multi-Language Support</h3>
-                    <p>Communicate in multiple languages with automatic translation and localization powered by Google's language models.</p>
+                <h3>Global Language Support</h3>
+                <p>Communicate seamlessly in 50+ languages with automatic translation and localization powered by Google's advanced language models and cultural understanding.</p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-microphone"></i>
                 </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-microphone"></i>
-                    </div>
-                    <h3>Voice Recognition</h3>
-                    <p>Speak naturally to place orders using Google's speech-to-text technology for hands-free order management.</p>
+                <h3>Voice Recognition</h3>
+                <p>Enable hands-free order management with Google's state-of-the-art speech-to-text technology, supporting natural voice commands and dictation.</p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
                 </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3>Smart Context Awareness</h3>
-                    <p>Maintains conversation context and remembers previous interactions for more personalized and efficient assistance.</p>
+                <h3>Context Intelligence</h3>
+                <p>Advanced conversation memory and context awareness ensure personalized interactions that remember preferences and previous conversations for superior user experience.</p>
+            </div>
+            
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-sync-alt"></i>
                 </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-sync"></i>
-                    </div>
-                    <h3>Real-time Integration</h3>
-                    <p>Seamlessly connects with your existing systems for instant order processing, inventory updates, and status tracking.</p>
-                </div>
+                <h3>Real-time Integration</h3>
+                <p>Seamlessly connect with your existing systems through robust APIs for instant order processing, inventory management, and real-time status updates.</p>
             </div>
         </div>
     </section>
@@ -726,20 +1136,20 @@
     <section class="stats-section">
         <div class="stats-grid">
             <div class="stat-item fade-in">
-                <span class="stat-number">99.9%</span>
-                <span class="stat-label">Uptime Guarantee</span>
+                <span class="stat-number" data-target="99.9">0</span>
+                <span class="stat-label">% Uptime Guarantee</span>
             </div>
             <div class="stat-item fade-in">
-                <span class="stat-number">50+</span>
-                <span class="stat-label">Languages Supported</span>
+                <span class="stat-number" data-target="50">0</span>
+                <span class="stat-label">+ Languages Supported</span>
             </div>
             <div class="stat-item fade-in">
-                <span class="stat-number">24/7</span>
-                <span class="stat-label">AI Availability</span>
+                <span class="stat-number" data-target="24">0</span>
+                <span class="stat-label">/7 AI Availability</span>
             </div>
             <div class="stat-item fade-in">
-                <span class="stat-number">95%</span>
-                <span class="stat-label">Intent Accuracy</span>
+                <span class="stat-number" data-target="95">0</span>
+                <span class="stat-label">% Intent Accuracy</span>
             </div>
         </div>
     </section>
@@ -747,98 +1157,201 @@
     <!-- Footer -->
     <footer id="contact" class="footer">
         <div class="footer-content">
-            <p>&copy; 2024 Fortify. All rights reserved.</p>
-            <p>Powered by Google Dialogflow | Advanced AI Order Management</p>
+            <div class="footer-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                Fortify
+            </div>
+            <p>Transforming order management with intelligent AI technology</p>
             <div class="footer-links">
                 <a href="#privacy">Privacy Policy</a>
                 <a href="#terms">Terms of Service</a>
-                <a href="#support">Support</a>
+                <a href="#support">Support Center</a>
                 <a href="#api">API Documentation</a>
+                <a href="#security">Security</a>
+                <a href="#careers">Careers</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Fortify. All rights reserved. | Powered by Google Dialogflow</p>
             </div>
         </div>
     </footer>
 
-    <!-- Dialogflow Messenger Script -->
+    <!-- Scripts -->
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-
+    
     <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+        // Sample AI responses for the demo
+        const aiResponses = [
+            "I'd be happy to help you place that order! Let me gather some details from you.",
+            "I can track that order for you right away. Please provide your order number.",
+            "I understand you'd like to modify your order. What changes would you like to make?",
+            "I can help you cancel that order and process a refund immediately.",
+            "Great question! Let me provide you with detailed product information.",
+            "I'm processing your request now. This will just take a moment.",
+            "Perfect! I've found several options that match your requirements.",
+            "I can help you with that. Let me check our current inventory and pricing.",
+            "Your order has been successfully processed! Here are the details.",
+            "I've updated your order status. You should receive a confirmation email shortly."
+        ];
 
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.header');
-            
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(255, 255, 255, 0.98)';
-                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-            } else {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
-                header.style.boxShadow = 'none';
-            }
-        });
-
-        // Animate stats numbers
+        // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            const statNumbers = document.querySelectorAll('.stat-number');
+            document.body.classList.remove('loading');
+            initScrollAnimations();
+            initHeaderScroll();
+            initSmoothScrolling();
+            initStatsAnimation();
+            initDemoChat();
+        });
+
+        // Demo chat functionality
+        function initDemoChat() {
+            const demoInput = document.getElementById('demoInput');
             
+            demoInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendDemoMessage();
+                }
+            });
+        }
+
+        function sendDemoMessage() {
+            const input = document.getElementById('demoInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addDemoMessage(message, true);
+            input.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
+                addDemoMessage(randomResponse, false);
+            }, 1000 + Math.random() * 1500);
+        }
+
+        function sendQuickMessage(message) {
+            addDemoMessage(message, true);
+            
+            // Simulate AI response
+            setTimeout(() => {
+                let response;
+                if (message.includes('Place')) {
+                    response = "I'd be happy to help you place a new order! What items would you like to order today?";
+                } else if (message.includes('Track')) {
+                    response = "I can help you track your order. Please provide your order number or email address.";
+                } else if (message.includes('Cancel')) {
+                    response = "I can assist you with canceling your order. Let me pull up your recent orders.";
+                } else {
+                    response = "I'm here to help! What specific question do you have about our services?";
+                }
+                addDemoMessage(response, false);
+            }, 800);
+        }
+
+        function addDemoMessage(content, isUser) {
+            const messagesContainer = document.getElementById('demoMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `demo-message ${isUser ? 'user' : 'bot'}`;
+            
+            messageDiv.innerHTML = `
+                <div class="demo-message-avatar">
+                    <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
+                </div>
+                <div class="demo-message-content">${content}</div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Smooth scrolling
+        function initSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        const headerHeight = document.querySelector('.header').offsetHeight;
+                        const targetPosition = target.offsetTop - headerHeight;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                        
+                        updateActiveNavLink(this.getAttribute('href'));
+                    }
+                });
+            });
+        }
+
+        function updateActiveNavLink(href) {
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`a[href="${href}"]`)?.classList.add('active');
+        }
+
+        function initHeaderScroll() {
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('.header');
+                
+                if (window.scrollY > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        }
+
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        function initStatsAnimation() {
             const animateStats = () => {
+                const statNumbers = document.querySelectorAll('.stat-number');
+                
                 statNumbers.forEach(stat => {
-                    const finalValue = stat.textContent;
-                    const isPercentage = finalValue.includes('%');
-                    const numericValue = parseFloat(finalValue.replace(/[^\d.]/g, ''));
-                    
-                    let currentValue = 0;
-                    const increment = numericValue / 50;
+                    const target = parseInt(stat.getAttribute('data-target'));
+                    const increment = target / 50;
+                    let current = 0;
                     
                     const timer = setInterval(() => {
-                        currentValue += increment;
-                        if (currentValue >= numericValue) {
-                            currentValue = numericValue;
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
                             clearInterval(timer);
                         }
                         
-                        if (isPercentage) {
-                            stat.textContent = currentValue.toFixed(1) + '%';
-                        } else if (finalValue.includes('+')) {
-                            stat.textContent = Math.floor(currentValue) + '+';
+                        if (target === 24) {
+                            stat.textContent = Math.floor(current);
                         } else {
-                            stat.textContent = finalValue.includes('/') ? '24/7' : Math.floor(currentValue);
+                            stat.textContent = current.toFixed(1);
                         }
-                    }, 50);
+                    }, 40);
                 });
             };
 
-            // Trigger animation when stats section is visible
             const statsSection = document.querySelector('.stats-section');
             const statsObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -850,44 +1363,23 @@
             }, { threshold: 0.5 });
 
             statsObserver.observe(statsSection);
-        });
+        }
 
-        // Dialogflow Messenger event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            const dfMessenger = document.querySelector('df-messenger');
+        // Performance optimization
+        window.addEventListener('load', function() {
+            const criticalImages = [
+                'https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/smart_toy/default/24px.svg'
+            ];
             
-            // Listen for when the messenger is ready
-            dfMessenger.addEventListener('df-messenger-loaded', function() {
-                console.log('Fortify AI Assistant is ready!');
-            });
-
-            // Listen for user messages
-            dfMessenger.addEventListener('df-user-input-entered', function(event) {
-                console.log('User message:', event.detail.input);
-                // You can add analytics tracking here
-            });
-
-            // Listen for bot responses
-            dfMessenger.addEventListener('df-response-received', function(event) {
-                console.log('Bot response:', event.detail.response);
-                // You can add analytics tracking here
+            criticalImages.forEach(src => {
+                const img = new Image();
+                img.src = src;
             });
         });
 
-        // Add click tracking for analytics
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.cta-button')) {
-                console.log('CTA button clicked - user interested in trying Fortify');
-            }
-            if (e.target.closest('.feature-card')) {
-                console.log('Feature card clicked:', e.target.closest('.feature-card').querySelector('h3').textContent);
-            }
-        });
-
-        // Welcome message after page load
         setTimeout(() => {
             console.log('🛡️ Welcome to Fortify - Your AI-Powered Order Management Solution!');
-        }, 2000);
+        }, 1000);
     </script>
 </body>
 </html>
